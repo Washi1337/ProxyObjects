@@ -2,13 +2,22 @@ using static AsmResolver.PE.DotNet.Cil.CilOpCodes;
 
 namespace ProxyObjects.Engine;
 
+/// <summary>
+/// A factory that generates proxy types with display strings that once accessed crashes the debuggee process with a
+/// <see cref="StackOverflowException" /> by calling itself over and over again.
+/// </summary>
 public class StackOverflowProxyFactory : ProxyFactory
 {
+    /// <summary>
+    /// Initializes the proxy factory.
+    /// </summary>
+    /// <param name="targetModule">The module to insert the proxy types into.</param>
     public StackOverflowProxyFactory(ModuleDefinition targetModule) 
         : base(targetModule)
     {
     }
 
+    /// <inheritdoc />
     protected override void PostProcessType(TypeSignature originalType, TypeDefinition proxyType)
     {
         var factory = TargetModule.CorLibTypeFactory;

@@ -2,10 +2,18 @@ using static AsmResolver.PE.DotNet.Cil.CilOpCodes;
 
 namespace ProxyObjects.Engine;
 
+/// <summary>
+/// A factory that generates proxy types with display strings that once accessed crashes the debuggee process with a
+/// call to <see cref="Environment.FailFast(string?)"/>.
+/// </summary>
 public class CrashProxyFactory : ProxyFactory
 {
     private readonly MemberReference _failFast;
 
+    /// <summary>
+    /// Initializes the proxy factory.
+    /// </summary>
+    /// <param name="targetModule">The module to insert the proxy types into.</param>
     public CrashProxyFactory(ModuleDefinition targetModule) 
         : base(targetModule)
     {
@@ -17,6 +25,7 @@ public class CrashProxyFactory : ProxyFactory
             .ImportWith(targetModule.DefaultImporter);
     }
 
+    /// <inheritdoc />
     protected override void PostProcessType(TypeSignature originalType, TypeDefinition proxyType)
     {
         var factory = TargetModule.CorLibTypeFactory;

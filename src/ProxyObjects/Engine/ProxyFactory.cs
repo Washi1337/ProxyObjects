@@ -1,8 +1,12 @@
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using static AsmResolver.PE.DotNet.Cil.CilOpCodes;
 
 namespace ProxyObjects.Engine;
 
+/// <summary>
+/// Provides a base implementation for a factory that generates proxy types
+/// </summary>
 public abstract class ProxyFactory
 {
     private readonly record struct ProxyTypeInfo(TypeDefinition Type, MethodDefinition Box, MethodDefinition Unbox);
@@ -16,6 +20,10 @@ public abstract class ProxyFactory
     private readonly TypeSignature _debuggerBrowsableStateType;
     private readonly MemberReference _debuggerBrowsableCtor;
 
+    /// <summary>
+    /// Initializes the proxy factory.
+    /// </summary>
+    /// <param name="targetModule">The module to insert the proxy types into.</param>
     protected ProxyFactory(ModuleDefinition targetModule)
     {
         TargetModule = targetModule;
@@ -53,21 +61,42 @@ public abstract class ProxyFactory
             .ImportWith(targetModule.DefaultImporter);
     }
 
+    /// <summary>
+    /// Gets the module to insert the proxy types into. 
+    /// </summary>
     public ModuleDefinition TargetModule
     {
         get;
     }
 
+    /// <summary>
+    /// Gets the common shared randomizer object.
+    /// </summary>
     protected Random Randomizer
     {
         get;
     } = new();
 
+    /// <summary>
+    /// Gets the proxy type of the provided type.
+    /// </summary>
+    /// <param name="type">The type to proxy.</param>
+    /// <returns>The proxy type.</returns>
+    public TypeDefinition GetProxyType(TypeSignature type) => GetProxyTypeInfo(type).Type;
+
+    /// <summary>
+    /// Gets the method for a type that converts an object into a proxy type.
+    /// </summary>
+    /// <param name="type">The type to proxy.</param>
+    /// <returns>The box method of the proxy type.</returns>
     public MethodDefinition GetBoxMethod(TypeSignature type) => GetProxyTypeInfo(type).Box;
 
+    /// <summary>
+    /// Gets the method for a type that converts a proxy object back into the instance of the original type. 
+    /// </summary>
+    /// <param name="type">The type to proxy.</param>
+    /// <returns>The box method of the proxy type.</returns>
     public MethodDefinition GetUnboxMethod(TypeSignature type) => GetProxyTypeInfo(type).Unbox;
-
-    public TypeDefinition GetProxyType(TypeSignature type) => GetProxyTypeInfo(type).Type;
 
     private ProxyTypeInfo GetProxyTypeInfo(TypeSignature type)
     {
@@ -238,8 +267,18 @@ public abstract class ProxyFactory
         return from;
     }
 
+    /// <summary>
+    /// Post-process the generated template proxy type.
+    /// </summary>
+    /// <param name="originalType">The original type that is being proxied.</param>
+    /// <param name="proxyType">The proxy type associated to <paramref name="originalType"/>.</param>
     protected abstract void PostProcessType(TypeSignature originalType, TypeDefinition proxyType);
     
+    /// <summary>
+    /// Generates a typical but random value for the provided type.
+    /// </summary>
+    /// <param name="type">The type to generate a value for.</param>
+    /// <returns>The random value.</returns>
     protected object? GenerateTypicalRandomValue(TypeSignature type)
     {
         switch (type.ElementType)
@@ -273,6 +312,12 @@ public abstract class ProxyFactory
         }
     }
 
+    /// <summary>
+    /// Formats an object as a string that can be used as a display string for a proxy type.
+    /// </summary>
+    /// <param name="originalType">The original type that is being proxied.</param>
+    /// <param name="value">The value to be formatted.</param>
+    /// <returns>The formatted string.</returns>
     protected string? FormatString(TypeSignature originalType, object? value)
     {
         switch (originalType.ElementType)
@@ -338,6 +383,12 @@ public abstract class ProxyFactory
         }
     }
     
+    /// <summary>
+    /// Creates a CIL instruction pushing a value as the provided type.
+    /// </summary>
+    /// <param name="type">The type of object to push.</param>
+    /// <param name="value">The value to push.</param>
+    /// <returns>The generated CIL instruction.</returns>
     protected static CilInstruction CreateTypicalInstruction(TypeSignature type, object? value)
     {
         var opcode = type.ElementType switch
@@ -368,6 +419,11 @@ public abstract class ProxyFactory
         return new CilInstruction(opcode, value);
     }
 
+    /// <summary>
+    /// Annotates the provided proxy type with a randomized <see cref="DebuggerDisplayAttribute"/>.
+    /// </summary>
+    /// <param name="originalType">The original type being proxied.</param>
+    /// <param name="proxyType">The type to add the attribute to.</param>
     protected void AddRandomDisplayString(TypeSignature originalType, TypeDefinition proxyType)
     {
         object? value = GenerateTypicalRandomValue(originalType);
@@ -440,6 +496,11 @@ public abstract class ProxyFactory
         return property;
     }
 
+    /// <summary>
+    /// Annotates the provided type with a <see cref="DebuggerDisplayAttribute"/>.
+    /// </summary>
+    /// <param name="type">The type to annotate.</param>
+    /// <param name="value">The display string to add.</param>
     protected void AddDisplayString(TypeDefinition type, string? value)
     {
         if (value is null)
@@ -450,15 +511,24 @@ public abstract class ProxyFactory
         )));
     }
 
-    protected void MarkAsNeverDebuggerBrowsable(IHasCustomAttribute property)
+    /// <summary>
+    /// Annotates the provided entity with a <see cref="DebuggerBrowsableAttribute"/> with the
+    /// <see cref="DebuggerBrowsableState.Never"/> argument.
+    /// </summary>
+    /// <param name="entity">The entity to annotate.</param>
+    protected void MarkAsNeverDebuggerBrowsable(IHasCustomAttribute entity)
     {
-        property.CustomAttributes.Add(new CustomAttribute(_debuggerBrowsableCtor, new CustomAttributeSignature(
+        entity.CustomAttributes.Add(new CustomAttribute(_debuggerBrowsableCtor, new CustomAttributeSignature(
             new CustomAttributeArgument(_debuggerBrowsableStateType, (int) DebuggerBrowsableState.Never)))
         );
     }
 
-    private void MarkAsCompilerGenerated(IHasCustomAttribute valueField)
+    /// <summary>
+    /// Annotates the provided entity with a <see cref="CompilerGeneratedAttribute"/>.
+    /// </summary>
+    /// <param name="entity">The entity to annotate.</param>
+    private void MarkAsCompilerGenerated(IHasCustomAttribute entity)
     {
-        valueField.CustomAttributes.Add(new CustomAttribute(_compilerGeneratorCtor));
+        entity.CustomAttributes.Add(new CustomAttribute(_compilerGeneratorCtor));
     }
 }

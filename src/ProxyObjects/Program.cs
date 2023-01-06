@@ -43,7 +43,7 @@ internal static class Program
 
     private static void Run(string file, string? mode, bool dynamicEmbed, bool annotateTypes)
     {
-        // Load file.
+        // Load target file.
         var module = ModuleDefinition.FromFile(file);
 
         // Apply obfuscation.

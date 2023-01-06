@@ -2,11 +2,18 @@ using static AsmResolver.PE.DotNet.Cil.CilOpCodes;
 
 namespace ProxyObjects.Engine;
 
+/// <summary>
+/// A factory that generates empty proxy types with a random display string.
+/// </summary>
 public class EmptyProxyFactory : ProxyFactory
 {
     private readonly TypeSignature _typeType;
     private readonly MemberReference _attributeCtor;
-
+    
+    /// <summary>
+    /// Initializes the proxy factory.
+    /// </summary>
+    /// <param name="targetModule">The module to insert the proxy types into.</param>
     public EmptyProxyFactory(ModuleDefinition targetModule)
         : base(targetModule)
     {
@@ -19,6 +26,7 @@ public class EmptyProxyFactory : ProxyFactory
             .ImportWith(targetModule.DefaultImporter);
     }
 
+    /// <inheritdoc />
     protected override void PostProcessType(TypeSignature originalType, TypeDefinition proxyType)
     {
         AddRandomDisplayString(originalType, proxyType);

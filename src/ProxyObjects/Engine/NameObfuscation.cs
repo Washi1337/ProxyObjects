@@ -1,7 +1,13 @@
 namespace ProxyObjects.Engine;
 
+/// <summary>
+/// Provides a mechanism for obfuscating names of .NET metadata.
+/// </summary>
 public static class NameObfuscation
 {   
+    /// <summary>
+    /// A mapping of latin characters to their homoglyph counterparts.
+    /// </summary>
     private static readonly Dictionary<char, char> Homoglyphs = new()
     {
         ['A'] = 'А',
@@ -22,6 +28,11 @@ public static class NameObfuscation
         ['c'] = 'с'
     };
     
+    /// <summary>
+    /// Applies the homoglyph obfuscation to a name.
+    /// </summary>
+    /// <param name="name">The name to obfuscate.</param>
+    /// <returns>The obfuscated name.</returns>
     public static string? ApplyHomoglyphs(string? name)
     {
         if (name is null)

@@ -2,13 +2,22 @@ using static AsmResolver.PE.DotNet.Cil.CilOpCodes;
 
 namespace ProxyObjects.Engine;
 
+/// <summary>
+/// A factory that generates proxy types with stateful display strings, changing the state of the proxied object with
+/// random values once the display string is accessed. 
+/// </summary>
 public class StateChangerProxyFactory : ProxyFactory
 {
+    /// <summary>
+    /// Initializes the proxy factory.
+    /// </summary>
+    /// <param name="targetModule">The module to insert the proxy types into.</param>
     public StateChangerProxyFactory(ModuleDefinition targetModule) 
         : base(targetModule)
     {
     }
 
+    /// <inheritdoc />
     protected override void PostProcessType(TypeSignature originalType, TypeDefinition proxyType)
     {
         switch (originalType.ElementType)

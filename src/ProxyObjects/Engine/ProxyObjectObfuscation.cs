@@ -1,5 +1,10 @@
+using System.Diagnostics;
+
 namespace ProxyObjects.Engine;
 
+/// <summary>
+/// The main interface for applying proxy object obfuscation to a .NET module.
+/// </summary>
 public class ProxyObjectObfuscation
 {
     private readonly ModuleDefinition _module;
@@ -23,11 +28,23 @@ public class ProxyObjectObfuscation
             .ImportWith(module.DefaultImporter);
     }
 
+    /// <summary>
+    /// Replaces the local variables in all method bodies with their proxy type counterpart where possible.
+    /// </summary>
+    /// <param name="module">The module to apply the obfuscation to.</param>
+    /// <param name="factory">The proxy type factory to use.</param>
+    /// <param name="annotateTypes">
+    /// <c>true</c> if existing types should be annotated with a<see cref="DebuggerTypeProxyAttribute"/> attribute,
+    /// <c>false</c> otherwise.
+    /// </param>
     public static void ApplyToModule(ModuleDefinition module, ProxyFactory factory, bool annotateTypes)
     {
         new ProxyObjectObfuscation(module, factory, annotateTypes).Run();
     }
     
+    /// <summary>
+    /// Applies the obfuscation.
+    /// </summary>
     public void Run()
     {
         foreach (var type in _module.GetAllTypes().ToArray())

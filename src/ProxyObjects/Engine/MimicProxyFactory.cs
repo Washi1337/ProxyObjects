@@ -2,13 +2,22 @@ using static AsmResolver.PE.DotNet.Cil.CilOpCodes;
 
 namespace ProxyObjects.Engine;
 
+/// <summary>
+/// A factory that generates proxy types that mimic the original type by copying over the fields and properties of the
+/// original class or structure.
+/// </summary>
 public class MimicProxyFactory : ProxyFactory
 {
+    /// <summary>
+    /// Initializes the proxy factory.
+    /// </summary>
+    /// <param name="targetModule">The module to insert the proxy types into.</param>
     public MimicProxyFactory(ModuleDefinition targetModule) 
         : base(targetModule)
     {
     }
 
+    /// <inheritdoc />
     protected override void PostProcessType(TypeSignature originalType, TypeDefinition proxyType)
     {
         AddRandomDisplayString(originalType, proxyType);
