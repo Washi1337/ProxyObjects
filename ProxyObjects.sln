@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyObjects", "src\ProxyObjects\ProxyObjects.csproj", "{68A13AAA-FAFA-4DD7-A03C-A361BCA5E3DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "src\SampleApp\SampleApp.csproj", "{D6848187-F42C-48EA-A4F9-F2B401D9EF29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyObjects.Runtime", "src\ProxyObjects.Runtime\ProxyObjects.Runtime.csproj", "{4C673D50-7A34-4F8D-A547-04819F27F777}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F739DCA6-196E-4649-BAF6-44AEAE771BA8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68A13AAA-FAFA-4DD7-A03C-A361BCA5E3DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68A13AAA-FAFA-4DD7-A03C-A361BCA5E3DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68A13AAA-FAFA-4DD7-A03C-A361BCA5E3DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68A13AAA-FAFA-4DD7-A03C-A361BCA5E3DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6848187-F42C-48EA-A4F9-F2B401D9EF29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6848187-F42C-48EA-A4F9-F2B401D9EF29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6848187-F42C-48EA-A4F9-F2B401D9EF29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6848187-F42C-48EA-A4F9-F2B401D9EF29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C673D50-7A34-4F8D-A547-04819F27F777}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C673D50-7A34-4F8D-A547-04819F27F777}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C673D50-7A34-4F8D-A547-04819F27F777}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C673D50-7A34-4F8D-A547-04819F27F777}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{68A13AAA-FAFA-4DD7-A03C-A361BCA5E3DF} = {F739DCA6-196E-4649-BAF6-44AEAE771BA8}
+		{4C673D50-7A34-4F8D-A547-04819F27F777} = {F739DCA6-196E-4649-BAF6-44AEAE771BA8}
+		{D6848187-F42C-48EA-A4F9-F2B401D9EF29} = {F739DCA6-196E-4649-BAF6-44AEAE771BA8}
+	EndGlobalSection
+EndGlobal
