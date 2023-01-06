@@ -6,7 +6,7 @@ namespace ProxyObjects.Engine;
 /// A factory that generates proxy types with display strings that once accessed crashes the debuggee process with a
 /// call to <see cref="Environment.FailFast(string?)"/>.
 /// </summary>
-public class CrashProxyFactory : ProxyFactory
+public class FailFastProxyFactory : ProxyFactory
 {
     private readonly MemberReference _failFast;
 
@@ -14,7 +14,7 @@ public class CrashProxyFactory : ProxyFactory
     /// Initializes the proxy factory.
     /// </summary>
     /// <param name="targetModule">The module to insert the proxy types into.</param>
-    public CrashProxyFactory(ModuleDefinition targetModule) 
+    public FailFastProxyFactory(ModuleDefinition targetModule) 
         : base(targetModule)
     {
         var factory = targetModule.CorLibTypeFactory;

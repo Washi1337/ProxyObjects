@@ -65,7 +65,7 @@ internal static class Program
     {
         "empty" => new EmptyProxyFactory(module),
         "mimic" or null => new MimicProxyFactory(module),
-        "failfast" => new CrashProxyFactory(module),
+        "failfast" => new FailFastProxyFactory(module),
         "stackoverflow" => new StackOverflowProxyFactory(module),
         "statechanger" => new StateChangerProxyFactory(module),
         _ => throw new ArgumentOutOfRangeException(nameof(mode), $"Unknown mode '{mode}'.")
