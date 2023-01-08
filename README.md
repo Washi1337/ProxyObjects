@@ -8,7 +8,7 @@ This repository contains a proof-of-concept implementation for applying Proxy Ob
 Proxy Object Obfuscation is a method for hiding the state of objects from .NET debuggers throughout a debugging session.
 It does so by replacing the values displayed in the Locals window with garbage data, making it confusing for a reverse engineer to step through the code easily:
 
-For more information on the technical details and applications, read [this blog post](https://washi.dev/blog/debugger-proxy-objects).
+For more information on the technical details and applications, read [this blog post](https://washi.dev/blog/posts/debugger-proxy-objects).
 
 ![](assets/dnSpy.gif)
 
